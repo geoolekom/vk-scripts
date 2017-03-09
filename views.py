@@ -1,13 +1,19 @@
 import collections
+import functools
 
 
-def message_rate(users, stats, nmessages):
+def message_rate(users, stats):
 
 	ordered_stats = collections.OrderedDict(
 		sorted(
 			stats.items(),
 			key=lambda item: item[1]
 		)
+	)
+
+	nmessages = functools.reduce(
+		lambda x, y: x + y,
+		stats.values()
 	)
 
 	for uid in ordered_stats:
