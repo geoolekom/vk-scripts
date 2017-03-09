@@ -1,0 +1,2 @@
+vk==2.0.2
+browser-cookie3==0.6.0
