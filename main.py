@@ -12,7 +12,7 @@ session = vk.Session(access_token=token)
 api = vk.API(session=session)
 
 chat_id = 100
-nmessages = 300000
+nmessages = 30000
 users = utils.get_chat_names(api, chat_id)
 msg_stats = utils.message_hist(
 	api,

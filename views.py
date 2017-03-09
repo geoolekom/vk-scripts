@@ -11,7 +11,7 @@ def message_rate(users, stats, rate=True):
 		)
 	)
 
-	if stats.values:
+	if stats.values():
 		nmessages = functools.reduce(
 			lambda x, y: x + y,
 			stats.values()
