@@ -14,7 +14,7 @@ session = vk.Session(access_token=token)
 api = vk.API(session=session)
 
 chat_id = 100
-nmessages = 1000000
+nmessages = 200000
 users = utils.get_chat_names(api, chat_id)
 stats = utils.message_stat(api, chat_id, nmessages=nmessages)
 deleted_users = [uid for uid in stats if uid not in users]

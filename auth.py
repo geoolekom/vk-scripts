@@ -1,5 +1,6 @@
 import requests
 import browser_cookie3
+import webbrowser
 
 import settings
 
@@ -19,4 +20,5 @@ def get_auth_data():
 	if result:
 		return dict([item.split('=') for item in result.split('&')])
 	else:
+		webbrowser.get().open(response.url)
 		raise ConnectionError('Авторизация не произошла.')

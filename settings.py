@@ -22,6 +22,6 @@ get_data = dict(
 	display=display,
 	scope=','.join(scope),
 	response_type=response_type,
-#	v=v,
+	v=v,
 	state=state
 )
