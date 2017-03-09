@@ -14,14 +14,11 @@ response_type = 'token'
 
 v = 5.62
 
-state = 12345
-
 get_data = dict(
 	client_id=client_id,
 	redirect_uri=redirect_uri,
 	display=display,
 	scope=','.join(scope),
 	response_type=response_type,
-	v=v,
-	state=state
+	v=v
 )

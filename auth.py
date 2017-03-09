@@ -22,3 +22,4 @@ def get_auth_data():
 	else:
 		webbrowser.get().open(response.url)
 		raise ConnectionError('Авторизация не произошла.')
+

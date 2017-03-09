@@ -1,3 +1,6 @@
+import string
+
+
 def message_count_handler(stats, message):
 	uid = message['uid']
 	if uid in stats:
@@ -23,11 +26,15 @@ def sticker_handler(stats, message):
 			stats[uid] = 1
 
 
-def hui_finder(stats, message):
-	uid = message['uid']
-	words = [word.lower() for word in message['body'].split(' ')]
-	if 'хуй' in words:
-		if uid in stats:
-			stats[uid] += 1
-		else:
-			stats[uid] = 1
+def word_handler(*tokens):
+	def handler(stats, message):
+		token_set = set(tokens)
+		uid = message['uid']
+		words = [word.lower() for word in message['body'].split(' ')]
+		words = [word.translate(word.maketrans('', '', string.punctuation)) for word in words]
+		if len(token_set.intersection(set(words))):
+			if uid in stats:
+				stats[uid] += 1
+			else:
+				stats[uid] = 1
+	return handler

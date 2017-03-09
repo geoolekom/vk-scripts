@@ -9,17 +9,17 @@ def get_messages(api, nmessages, start=0, per_connect=5000, per_request=200, **c
 	count, start_message = delayed()(api.messages.getHistory)(**credentials, count=1)
 
 	limit_all = min(nmessages, count)
-	limit_connect = min(nmessages, per_connect)
-	limit_request = min(nmessages, per_request)
 
 	for offset in range(start, limit_all, per_connect):
 
 		method_call_list = list()
+		limit_connect = min(limit_all - offset, per_connect)
 
 		for i in range(0, limit_connect, per_request):
+			limit_request = min(limit_connect - i, per_request)
 			method_call_list.append(
 				'API.messages.getHistory({0}).slice(1)'.format(
-					json.dumps(dict(**credentials, count=limit_request, offset=offset+i))
+					json.dumps(dict(**credentials, count=limit_request, offset=offset + i))
 				)
 			)
 
@@ -34,10 +34,10 @@ def get_messages(api, nmessages, start=0, per_connect=5000, per_request=200, **c
 	return chat_slice
 
 
-def message_hist(api, chat_id, message_handler_list, nmessages):
+def message_hist(api, message_handler_list, nmessages, **credentials):
 
 	stats = [dict() for _ in message_handler_list]
-	chat_slice = get_messages(api, chat_id=chat_id, nmessages=nmessages)
+	chat_slice = get_messages(api, nmessages=nmessages, **credentials)
 
 	for i, handler in enumerate(message_handler_list):
 		for msg in chat_slice:
