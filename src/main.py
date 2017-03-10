@@ -25,8 +25,8 @@ def messages_script():
 		nmessages=nmessages
 	)
 
-	msg_stats = utils.data_to_hist(
-		handler=handlers.message_count_handler,
+	msg_stats, = utils.data_to_hist(
+		handler_list=[handlers.message_count_handler],
 		data=messages
 	)
 
@@ -50,9 +50,9 @@ def post_script():
 		nposts=1000
 	)
 
-	post_stats = utils.data_to_hist(
+	post_stats, = utils.data_to_hist(
 		data=posts,
-		handler=handlers.post_like_handler
+		handler_list=[handlers.post_like_handler]
 	)
 
 	views.text_hist(post_stats, rate=False)
