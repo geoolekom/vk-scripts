@@ -26,7 +26,7 @@ def sticker_handler(stats, message):
 			stats[uid] = 1
 
 
-def word_handler(*tokens):
+def word_mentioned_handler(*tokens):
 	def handler(stats, message):
 		token_set = set(tokens)
 		uid = message['uid']
@@ -38,3 +38,12 @@ def word_handler(*tokens):
 			else:
 				stats[uid] = 1
 	return handler
+
+
+def word_count_handler(stats, message):
+	uid = message['uid']
+	nwords = len(message['body'].split())
+	if uid in stats:
+		stats[uid] += nwords
+	else:
+		stats[uid] = nwords
