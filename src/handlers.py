@@ -47,3 +47,7 @@ def word_count_handler(stats, message):
 		stats[uid] += nwords
 	else:
 		stats[uid] = nwords
+
+
+def post_like_handler(stats, post):
+	pass

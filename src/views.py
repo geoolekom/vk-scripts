@@ -2,7 +2,7 @@ import collections
 import functools
 
 
-def message_rate(users, stats, rate=True):
+def text_hist(labels, stats, rate=True):
 
 	ordered_stats = collections.OrderedDict(
 		sorted(
@@ -12,19 +12,19 @@ def message_rate(users, stats, rate=True):
 	)
 
 	if stats.values():
-		nmessages = functools.reduce(
+		ndata = functools.reduce(
 			lambda x, y: x + y,
 			stats.values()
 		)
 	else:
-		nmessages = 0
+		ndata = 0
 
-	print(nmessages)
+	print(ndata)
 
 	for uid in ordered_stats:
-		name = users[uid].ljust(40)
+		name = labels[uid].ljust(40)
 		if rate:
-			value = round(stats[uid] / nmessages * 100, 2)
+			value = round(stats[uid] / ndata * 100, 2)
 		else:
 			value = stats[uid]
 
