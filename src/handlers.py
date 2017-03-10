@@ -31,7 +31,7 @@ def word_mentioned_handler(*tokens):
 		token_set = set(tokens)
 		uid = message['uid']
 		words = [word.lower() for word in message['body'].split(' ')]
-		words = [word.translate(word.maketrans('', '', string.punctuation)) for word in words]
+		words = [word.translate(word.maketrans('', '', string.punctuation)) for word in words if word]
 		if len(token_set.intersection(set(words))):
 			if uid in stats:
 				stats[uid] += 1
@@ -49,5 +49,23 @@ def word_count_handler(stats, message):
 		stats[uid] = nwords
 
 
+def word_popularity_handler(stats, message):
+	words = [word.lower() for word in message['body'].split(' ')]
+	words = [word.translate(word.maketrans('', '', string.punctuation)) for word in words if word]
+	words = [word for word in words if len(word) > 4]
+
+	for word in words:
+		if word in stats:
+			stats[word] += 1
+		else:
+			stats[word] = 1
+
+
 def post_like_handler(stats, post):
-	pass
+	pid = post['id']
+	nlikes = post['likes']['count']
+
+	if pid in stats:
+		stats[pid] += nlikes
+	else:
+		stats[pid] = nlikes

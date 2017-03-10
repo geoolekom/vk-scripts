@@ -2,7 +2,7 @@ import collections
 import functools
 
 
-def text_hist(labels, stats, rate=True):
+def text_hist(stats, labels=None, rate=False):
 
 	ordered_stats = collections.OrderedDict(
 		sorted(
@@ -19,13 +19,18 @@ def text_hist(labels, stats, rate=True):
 	else:
 		ndata = 0
 
-	print(ndata)
+	for key in ordered_stats:
 
-	for uid in ordered_stats:
-		name = labels[uid].ljust(40)
-		if rate:
-			value = round(stats[uid] / ndata * 100, 2)
+		if not labels:
+			name = str(key).ljust(25)
 		else:
-			value = stats[uid]
+			name = labels[key].ljust(40)
+
+		if rate:
+			value = round(stats[key] / ndata * 100, 2)
+		else:
+			value = stats[key]
 
 		print("{0} {1}".format(name, value))
+
+	print(ndata)

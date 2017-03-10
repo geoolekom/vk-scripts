@@ -7,7 +7,7 @@ from utils.decorators import delayed
 def get_data(api, method_name, ndata, per_request, start=0, **credentials):
 	per_connect = 25*per_request
 	data_slice = list()
-	count, start_message = delayed()(api.messages.getHistory)(**credentials, count=1)
+	count, first_obj = delayed()(getattr(api, method_name))(**credentials, count=1)
 
 	limit_all = min(ndata, count)
 
