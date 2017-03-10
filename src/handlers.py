@@ -50,8 +50,10 @@ def word_count_handler(stats, message):
 
 
 def word_popularity_handler(stats, message):
-	words = [word.lower() for word in message['body'].split(' ')]
-	words = [word.translate(word.maketrans('', '', string.punctuation)) for word in words if word]
+	text = message['body'].translate(
+		message['body'].maketrans('', '', string.punctuation)
+	)
+	words = [word.lower() for word in text.split(' ') if word]
 	words = [word for word in words if len(word) > 4]
 
 	for word in words:

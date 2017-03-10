@@ -15,7 +15,7 @@ api = vk.API(session=session)
 def messages_script():
 
 	chat_id = 100
-	nmessages = 100000
+	nmessages = 1000
 
 	users = utils.get_chat_names(api, chat_id)
 
@@ -25,23 +25,19 @@ def messages_script():
 		nmessages=nmessages
 	)
 
-	word_stats, word_count_stats = utils.data_to_hist(
-		handler_list=[
-			handlers.word_mentioned_handler('фонди'),
-			handlers.word_count_handler
-		],
+	msg_stats = utils.data_to_hist(
+		handler=handlers.message_count_handler,
 		data=messages
 	)
 
-	deleted_users = [uid for uid in word_count_stats if uid not in users or uid not in word_stats]
+	deleted_users = [uid for uid in msg_stats if uid not in users]
 
 	for uid in deleted_users:
 		users[uid] = utils.get_name_by_id(api, uid)
-		word_stats[uid] = 0
 
 	views.text_hist(
 		labels=users,
-		stats=word_stats,
+		stats=msg_stats,
 		rate=True
 	)
 
@@ -56,8 +52,8 @@ def post_script():
 
 	post_stats = utils.data_to_hist(
 		data=posts,
-		handler_list=[handlers.post_like_handler]
-	)[0]
+		handler=handlers.post_like_handler
+	)
 
 	views.text_hist(post_stats, rate=False)
 

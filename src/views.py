@@ -33,4 +33,5 @@ def text_hist(stats, labels=None, rate=False):
 
 		print("{0} {1}".format(name, value))
 
-	print(ndata)
+	print("Всего: {0}".format(ndata))
+

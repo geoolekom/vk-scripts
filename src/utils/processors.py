@@ -1,8 +1,5 @@
-def data_to_hist(handler_list, data):
-	stats = [dict() for _ in handler_list]
-
-	for i, handler in enumerate(handler_list):
-		for elem in data:
-			handler(stats[i], elem)
-
+def data_to_hist(handler, data):
+	stats = dict()
+	[handler(stats, elem) for elem in data]
+	# map(lambda elem: handler(stats, elem), data)
 	return stats
