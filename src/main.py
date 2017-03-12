@@ -15,7 +15,7 @@ api = vk.API(session=session)
 def messages_script():
 
 	chat_id = 100
-	nmessages = 1000
+	nmessages = 3000
 
 	users = utils.get_chat_names(api, chat_id)
 
@@ -38,7 +38,7 @@ def messages_script():
 	views.text_hist(
 		labels=users,
 		stats=msg_stats,
-		rate=True
+		rate=False
 	)
 
 

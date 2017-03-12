@@ -22,16 +22,16 @@ def text_hist(stats, labels=None, rate=False):
 	for key in ordered_stats:
 
 		if not labels:
-			name = str(key).ljust(25)
+			label = str(key).ljust(40)
 		else:
-			name = labels[key].ljust(40)
+			label = labels[key].ljust(40)
 
 		if rate:
 			value = round(stats[key] / ndata * 100, 2)
 		else:
 			value = stats[key]
 
-		print("{0} {1}".format(name, value))
+		print("{0} {1}".format(label, value))
 
 	print("Всего: {0}".format(ndata))
 
