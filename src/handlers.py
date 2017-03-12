@@ -1,4 +1,5 @@
 import string
+import datetime
 
 
 def message_count_handler(stats, message):
@@ -15,6 +16,14 @@ def message_length_handler(stats, message):
 		stats[uid] += len(message['body'])
 	else:
 		stats[uid] = len(message['body'])
+
+
+def message_daily_handler(stats, message):
+	date = datetime.date.fromtimestamp(message['date'])
+	if date in stats:
+		stats[date] += 1
+	else:
+		stats[date] = 1
 
 
 def sticker_handler(stats, message):
@@ -71,3 +80,16 @@ def post_like_handler(stats, post):
 		stats[pid] += nlikes
 	else:
 		stats[pid] = nlikes
+
+
+def audio_count_handler(stats, message):
+	uid = message['uid']
+	if not message['body'] and 'attachments' in message:
+		att_list = message['attachments']
+		for att in att_list:
+			if att['type'] == 'doc' and 'ext' in att['doc'] and att['doc']['ext'] == 'ogg':
+				if uid in stats:
+					stats[uid] += 1
+				else:
+					stats[uid] = 1
+

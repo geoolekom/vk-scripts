@@ -1,4 +1,5 @@
 import vk
+# import cProfile
 
 import auth
 import utils
@@ -15,29 +16,30 @@ api = vk.API(session=session)
 def messages_script():
 
 	chat_id = 100
-	nmessages = 3000
-
-	users = utils.get_chat_names(api, chat_id)
+	nmessages = 5000
 
 	messages = utils.get_messages(
 		api,
 		chat_id=chat_id,
+		# user_id=183824694,
 		nmessages=nmessages
 	)
+	# [print(msg) for msg in messages]
 
 	msg_stats, = utils.data_to_hist(
-		handler_list=[handlers.message_count_handler],
+		handler_list=[handlers.word_mentioned_handler('светюха', 'кирилл', 'керил')],
 		data=messages
 	)
 
-	deleted_users = [uid for uid in msg_stats if uid not in users]
+	users = utils.get_chat_names(api, chat_id)
+	utils.get_users(api, user_ids=msg_stats, user_dict=users)
 
-	for uid in deleted_users:
-		users[uid] = utils.get_name_by_id(api, uid)
+	names = utils.get_full_names(users)
 
-	views.text_hist(
-		labels=users,
+	views.plot_view(
+		labels=names,
 		stats=msg_stats,
+		order_by=lambda item: item[1],
 		rate=False
 	)
 
@@ -58,6 +60,5 @@ def post_script():
 	views.text_hist(post_stats, rate=False)
 
 messages_script()
-
 
 
