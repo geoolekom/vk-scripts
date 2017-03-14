@@ -1,24 +1,18 @@
-client_id = 5913330
+from configparser import ConfigParser
+import os
 
-redirect_uri = 'https://oauth.vk.com/blank.html'
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-display = 'page'
-
-scope = [
-	'friends',
-	'messages',
-	'wall',
-]
-
-response_type = 'token'
-
-v = 5.62
-
-get_data = dict(
-	client_id=client_id,
-	redirect_uri=redirect_uri,
-	display=display,
-	scope=','.join(scope),
-	response_type=response_type,
-	v=v
+config = ConfigParser()
+config.read(
+	os.path.join(PROJECT_DIR, '../vk.conf')
 )
+
+AUTH_DATA = {
+	'client_id': config.get('auth', 'APP_ID'),
+	'redirect_uri': config.get('auth', 'REDIRECT_URI'),
+	'scope': config.get('auth', 'ACCESS_TO'),
+	'display': 'page',
+	'response_type': 'token',
+	'v': 5.62,
+}

@@ -11,7 +11,7 @@ def get_auth_data():
 
 	response = requests.get(
 		'https://oauth.vk.com/authorize',
-		params=settings.get_data,
+		params=settings.AUTH_DATA,
 		cookies=cookies
 	)
 

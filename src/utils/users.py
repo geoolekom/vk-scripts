@@ -4,7 +4,7 @@ from utils.getters import get_data
 MAX_USER_IDS = 100
 
 
-def get_chat_names(api, chat_id):
+def get_chat_users(api, chat_id):
 
 	user_list = delayed()(api.messages.getChatUsers)(chat_id=chat_id, fields=['first_name', ])
 

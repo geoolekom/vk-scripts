@@ -3,41 +3,35 @@ import functools
 import plotly
 
 
-def text_hist(stats, labels=None, rate=False, order_by=lambda item: item[0]):
+def text_hist(keys, data_dict, label_dict=None, rate=False):
 
-	ordered_stats = collections.OrderedDict(
-		sorted(
-			stats.items(),
-			key=order_by
-		)
+	if not keys:
+		print('Нечего выводить!')
+		return
+
+	ndata = functools.reduce(
+		lambda x, y: x + y,
+		[data_dict[key] for key in keys]
 	)
 
-	if stats.values():
-		ndata = functools.reduce(
-			lambda x, y: x + y,
-			stats.values()
-		)
+	if not label_dict:
+		label_dict = {key: str(key) for key in keys}
+
+	if rate:
+		view_dict = {key: round(data_dict[key]/ndata, 2) for key in keys}
 	else:
-		ndata = 0
+		view_dict = data_dict
 
-	for key in ordered_stats:
-
-		if not labels:
-			label = str(key).ljust(40)
-		else:
-			label = labels[key].ljust(40)
-
-		if rate:
-			value = round(stats[key] / ndata * 100, 2)
-		else:
-			value = stats[key]
-
-		print("{0} {1}".format(label, value))
+	for key in keys:
+		print("{0} {1}".format(
+			label_dict[key].ljust(40),
+			view_dict[key]
+		))
 
 	print("Всего: {0}".format(ndata))
 
 
-def plot_view(stats, labels=None, rate=False, order_by=lambda item: item[0]):
+def plot_hist(stats, labels=None, rate=False, order_by=lambda item: item[0]):
 
 	ordered_stats = collections.OrderedDict(
 		sorted(
@@ -56,9 +50,9 @@ def plot_view(stats, labels=None, rate=False, order_by=lambda item: item[0]):
 	plotly.offline.plot(
 		{
 			'data': [plotly.graph_objs.Bar(
-				x=y[-30:],
-				y=x[-30:],
-				orientation='h'
+				x=x,
+				y=y,
+				# orientation='h'
 			)],
 			'layout': plotly.graph_objs.Layout(title="Message stats", margin=dict(l=150)),
 		},

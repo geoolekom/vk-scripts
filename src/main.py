@@ -16,7 +16,7 @@ api = vk.API(session=session)
 def messages_script():
 
 	chat_id = 100
-	nmessages = 5000
+	nmessages = 3000
 
 	messages = utils.get_messages(
 		api,
@@ -27,19 +27,22 @@ def messages_script():
 	# [print(msg) for msg in messages]
 
 	msg_stats, = utils.data_to_hist(
-		handler_list=[handlers.word_mentioned_handler('светюха', 'кирилл', 'керил')],
+		handler_list=[handlers.message_count_handler],
 		data=messages
 	)
 
-	users = utils.get_chat_names(api, chat_id)
+	users = utils.get_chat_users(api, chat_id)
 	utils.get_users(api, user_ids=msg_stats, user_dict=users)
 
 	names = utils.get_full_names(users)
 
-	views.plot_view(
-		labels=names,
-		stats=msg_stats,
-		order_by=lambda item: item[1],
+	views.text_hist(
+		keys=sorted(
+			list(msg_stats.keys()),
+			key=lambda item: msg_stats[item]
+		),
+		label_dict=names,
+		data_dict=msg_stats,
 		rate=False
 	)
 
