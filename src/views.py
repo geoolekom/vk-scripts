@@ -1,10 +1,8 @@
-import collections
 import functools
 import plotly
 
 
-def text_hist(keys, data_dict, label_dict=None, rate=False):
-
+def dict_view(view_method, keys, data_dict, label_dict=None, rate=False):
 	if not keys:
 		print('Нечего выводить!')
 		return
@@ -15,43 +13,35 @@ def text_hist(keys, data_dict, label_dict=None, rate=False):
 	)
 
 	if not label_dict:
-		label_dict = {key: str(key) for key in keys}
+		labels = [str(key).ljust(40) for key in keys]
+	else:
+		labels = [str(label_dict[key]).ljust(40) for key in keys]
 
 	if rate:
-		view_dict = {key: round(data_dict[key]/ndata, 2) for key in keys}
+		values = [round(data_dict[key]/ndata, 2) for key in keys]
 	else:
-		view_dict = data_dict
+		values = [data_dict[key] for key in keys]
 
-	for key in keys:
-		print("{0} {1}".format(
-			label_dict[key].ljust(40),
-			view_dict[key]
-		))
+	view_method(labels, values)
 
 	print("Всего: {0}".format(ndata))
 
 
-def plot_hist(stats, labels=None, rate=False, order_by=lambda item: item[0]):
+def text_hist(labels, values):
 
-	ordered_stats = collections.OrderedDict(
-		sorted(
-			stats.items(),
-			key=order_by
-		)
-	)
+	for i in range(len(labels)):
+		print("{0} {1}".format(labels[i], values[i]))
 
-	if not labels:
-		x = list(ordered_stats.keys())
-	else:
-		x = [labels[key] for key in ordered_stats]
+	# print(map("{0} {1}".format, labels, values))
 
-	y = list(ordered_stats.values())
+
+def plotly_hist(labels, values):
 
 	plotly.offline.plot(
 		{
 			'data': [plotly.graph_objs.Bar(
-				x=x,
-				y=y,
+				x=labels,
+				y=values,
 				# orientation='h'
 			)],
 			'layout': plotly.graph_objs.Layout(title="Message stats", margin=dict(l=150)),

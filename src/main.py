@@ -36,7 +36,8 @@ def messages_script():
 
 	names = utils.get_full_names(users)
 
-	views.text_hist(
+	views.dict_view(
+		view_method=views.plotly_hist,
 		keys=sorted(
 			list(msg_stats.keys()),
 			key=lambda item: msg_stats[item]

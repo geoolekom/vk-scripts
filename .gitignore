@@ -2,4 +2,4 @@
 .idea
 env
 *.html
-
+*.conf
