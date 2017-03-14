@@ -1,7 +1,7 @@
 import itertools
 
 
-def data_to_hist(handler_list, data):
+def data_to_dict(handler_list, data):
 	stats_list = [dict() for _ in handler_list]
 
 	[handler(stats, elem) for (handler, stats), elem in itertools.product(zip(handler_list, stats_list), data)]

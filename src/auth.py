@@ -5,7 +5,7 @@ import webbrowser
 import settings
 
 
-def get_auth_data():
+def cookies_auth():
 
 	cookies = browser_cookie3.load()
 

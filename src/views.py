@@ -44,7 +44,7 @@ def plotly_hist(labels, values):
 				y=values,
 				# orientation='h'
 			)],
-			'layout': plotly.graph_objs.Layout(title="Message stats", margin=dict(l=150)),
+			'layout': plotly.graph_objs.Layout(margin=dict(l=150)),
 		},
 		filename='../chart.html'
 	)

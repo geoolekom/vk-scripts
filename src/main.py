@@ -6,7 +6,7 @@ import utils
 import views
 import handlers
 
-result = auth.get_auth_data()
+result = auth.cookies_auth()
 token = result['access_token']
 
 session = vk.Session(access_token=token)
@@ -21,13 +21,11 @@ def messages_script():
 	messages = utils.get_messages(
 		api,
 		chat_id=chat_id,
-		# user_id=183824694,
 		nmessages=nmessages
 	)
-	# [print(msg) for msg in messages]
 
-	msg_stats, = utils.data_to_hist(
-		handler_list=[handlers.message_count_handler],
+	msg_stats, = utils.data_to_dict(
+		handler_list=[handlers.user_messages_count],
 		data=messages
 	)
 
@@ -50,19 +48,28 @@ def messages_script():
 
 def post_script():
 
+	igm_id = -30602036
+	plum_id = -50177168
+
 	posts = utils.get_wall_posts(
 		api,
-		owner_id=-30602036,
+		owner_id=igm_id,
 		nposts=1000
 	)
 
-	post_stats, = utils.data_to_hist(
+	daily_likes, daily_posts = utils.data_to_dict(
 		data=posts,
-		handler_list=[handlers.post_like_handler]
+		handler_list=[handlers.daily_likes, handlers.daily_posts]
 	)
 
-	views.text_hist(post_stats, rate=False)
+	views.dict_view(
+		view_method=views.plotly_hist,
+		keys=daily_likes.keys(),
+		data_dict={
+			key: daily_likes[key]/daily_posts[key] for key in daily_likes
+		}
+	)
 
-messages_script()
+post_script()
 
 
